@@ -1,6 +1,8 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import { User } from './entity/User';
+import { Badge } from './entity/Badge';
+import { Movie } from './entity/Movie';
 
 export const AppDataSource = new DataSource({
   type: 'mysql',
@@ -11,7 +13,7 @@ export const AppDataSource = new DataSource({
   database: 'MovieDex',
   synchronize: true,
   logging: false,
-  entities: [User],
+  entities: [User, Badge, Movie],
   migrations: [],
   subscribers: [],
 });

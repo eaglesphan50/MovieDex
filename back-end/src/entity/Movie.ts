@@ -7,7 +7,7 @@ export class Movie {
   @PrimaryGeneratedColumn()
     id: number;
   
-  @Column({ default: () => 'NOW()'})
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
     created_at: string;
 
   @ManyToMany(() => User, user => user.movies)

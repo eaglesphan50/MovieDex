@@ -19,7 +19,7 @@ export class User {
   @Column()
     updated_at: string;
 
-  @Column({ default: () => 'NOW()'})
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
     created_at: string;
 
   @ManyToMany(() => Badge, badge => badge.users)
