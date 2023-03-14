@@ -2,6 +2,7 @@ import { AppDataSource } from '../data-source';
 import { NextFunction, Request, Response } from 'express';
 import * as moment from 'moment';
 import { Badge } from '../entity/Badge';
+import { Movie } from '../entity/Movie';
 
 export class BadgeController {
 
@@ -25,15 +26,24 @@ export class BadgeController {
   }
 
   async save(request: Request, response: Response, next: NextFunction) {
-    const { rarity, icon, name, description } = request.body;
+    const id = parseInt(request.params.id);
+    const { rarity, icon, name, description, movieId } = request.body;
+    const movie = await AppDataSource.getRepository(Movie).findOneBy({ id: movieId });
+    let badge = await this.badgeRepository.findOneBy({ id });
+
+    const moviesAssociated = badge.movies;
+    if (!moviesAssociated.includes(movie)) {
+      moviesAssociated.push(movie);
+    }
 
     const updatedAt = moment().format('YYYY-MM-DD HH:mm:ss');
 
-    const badge = Object.assign(new Badge(), {
+    badge = Object.assign(badge, {
       rarity,
       icon,
       name,
       description,
+      movies: moviesAssociated,
       updated_at: updatedAt
     });
 
