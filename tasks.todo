@@ -1,0 +1,29 @@
+- create backend
+  - set up orm @done
+    - integrate 3 many to many relationships @done
+    - finalize routing mechanics @done
+  - integrate with TMDB
+    - get TMDB api key @done
+    - test webservice
+    - identify needed info
+  - create endpoints
+    - create user crud @done
+    - create badge crud @done
+    - create watch movie endpoint @done
+      - integrate badge reception @done
+    - create unwatch movie endpoint
+      - create badge takeaway
+    - create get movie info endpoint
+    - create movies per badge endpoint
+  - create authentication
+    - integrate passport.js
+    - create token system to protect APIs
+- create frontend
+  - set up react project
+  - create pages
+    - login page
+    - profile page
+    - home page
+    - movie page
+    - list page?
+- set up logger

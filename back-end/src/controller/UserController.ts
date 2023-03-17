@@ -69,26 +69,24 @@ export class UserController {
       relations: ['badges']
     });
 
+    // Add movie to the user's watchlist
     const updatedAt = moment().format('YYYY-MM-DD HH:mm:ss');
-
     const moviesSeen = user.movies;
     if (!moviesSeen.includes(movie)) {
       moviesSeen.push(movie);
     }
-
     user = Object.assign(user, {
       movies: moviesSeen,
       updated_at: updatedAt
     });
-
     user = await this.userRepository.save(user);
 
-    // check if badge added
+    // see if badge should be awarded
     let anyBadgesGiven = false;
     const newBadges = [];
     for (const badge of movie.badges) {
       if (user.badges.some((b: Badge) => b.id === badge.id)) {
-        continue;
+        continue; // user already has badge
       }
       const fullBadge = await AppDataSource.getRepository(Badge).findOne({ 
         where: {id: badge.id},
@@ -98,8 +96,11 @@ export class UserController {
       for (const movieInLoop of fullBadge.movies) {
         if (!user.movies.some((m: Movie) => m.id === movieInLoop.id)) {
           giveBadge = false;
+          break; // user has not seen all of the movies for this badge
         }
       }
+
+      // user has seen the all of the movies for this badge and it can be given
       if (giveBadge) {
         const heldBadges = user.badges;
         heldBadges.push(badge);
@@ -112,6 +113,7 @@ export class UserController {
       anyBadgesGiven = giveBadge;
     }
 
+    // return badge information (if any) to display on the front end
     return {
       userId: id,
       movieId,

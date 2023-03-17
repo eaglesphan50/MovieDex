@@ -1,4 +1,5 @@
 import { BadgeController } from './controller/BadgeController';
+import { MovieController } from './controller/MovieController';
 import { UserController } from './controller/UserController';
 
 export const Routes = [{
@@ -56,4 +57,9 @@ export const Routes = [{
   route: '/badges/:id',
   controller: BadgeController,
   action: 'remove'
+}, {
+  method: 'get',
+  route: '/movied/:id',
+  controller: MovieController,
+  action: 'one'
 }];
