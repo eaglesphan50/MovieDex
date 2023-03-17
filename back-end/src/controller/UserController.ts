@@ -4,6 +4,7 @@ import { NextFunction, Request, Response } from 'express';
 import { User } from '../entity/User';
 import * as moment from 'moment';
 import { Movie } from '../entity/Movie';
+import { Badge } from '../entity/Badge';
 
 export class UserController {
 
@@ -86,12 +87,16 @@ export class UserController {
     let anyBadgesGiven = false;
     const newBadges = [];
     for (const badge of movie.badges) {
-      if (user.badges.includes(badge)) {
+      if (user.badges.some((b: Badge) => b.id === badge.id)) {
         continue;
       }
+      const fullBadge = await AppDataSource.getRepository(Badge).findOne({ 
+        where: {id: badge.id},
+        relations: ['movies']
+      });
       let giveBadge = true;
-      for (const movieInLoop of badge.movies) {
-        if (!user.movies.includes(movieInLoop)) {
+      for (const movieInLoop of fullBadge.movies) {
+        if (!user.movies.some((m: Movie) => m.id === movieInLoop.id)) {
           giveBadge = false;
         }
       }
@@ -102,6 +107,7 @@ export class UserController {
         user = Object.assign(user, {
           badges: heldBadges
         });
+        user = await this.userRepository.save(user);
       }
       anyBadgesGiven = giveBadge;
     }
