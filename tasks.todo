@@ -6,6 +6,9 @@
     - get TMDB api key @done
     - test webservice
     - identify needed info
+  - set up caching system
+    - investigate options
+      - Redis?
   - create endpoints
     - create user crud @done
     - create badge crud @done
@@ -27,3 +30,5 @@
     - movie page
     - list page?
 - set up logger
+- set up environment manager
+  - .env file?

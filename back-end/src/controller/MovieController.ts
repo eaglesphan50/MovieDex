@@ -19,6 +19,8 @@ export class MovieController {
     }
 
     // TODO integrate with TMDB here
+    // TODO get poster, background images
+    // TODO cache?
 
     return movie;
   }
