@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { AppDataSource } from '../data-source';
 import { NextFunction, Request, Response } from 'express';
 import { User } from '../entity/User';
@@ -129,8 +128,6 @@ export class UserController {
       relations: ['movies'],
       where: { id }
     });
-
-    console.log(user);
 
     return user.movies;
   }

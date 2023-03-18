@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import * as moment from 'moment';
 import { Badge } from '../entity/Badge';
 import { Movie } from '../entity/Movie';
+import { logger } from '../../lib/logger';
 
 export class BadgeController {
 
@@ -46,6 +47,7 @@ export class BadgeController {
       movies: moviesAssociated,
       updated_at: updatedAt
     });
+    logger.info('saving badge: ' + JSON.stringify(badge));
 
     return this.badgeRepository.save(badge);
   }

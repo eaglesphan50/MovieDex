@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/ban-types */
-/* eslint-disable no-console */
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as dotenv from 'dotenv';
@@ -8,6 +7,7 @@ import { Request, Response } from 'express';
 
 import { AppDataSource } from './data-source';
 import { Routes } from './routes';
+import { logger } from '../lib/logger';
 
 AppDataSource.initialize().then(async () => {
 
@@ -33,6 +33,6 @@ AppDataSource.initialize().then(async () => {
   // start express server
   app.listen(process.env.EXPRESS_PORT);
 
-  console.log('Express server has started on port 3000. Open http://localhost:3000/users to see results');
+  logger.info('Express server has started on port 3000. Open http://localhost:3000/users to see results');
 
-}).catch(error => console.log(error));
+}).catch(error => logger.info(error));

@@ -40,6 +40,8 @@
     - home page
     - movie page
     - list page?
-- set up logger
+- logger
+  - set up logger @done
+  - add logging to all queries
 - set up environment manager @done
   - .env file? @done
