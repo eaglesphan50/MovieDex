@@ -4,8 +4,14 @@
     - finalize routing mechanics @done
   - integrate with TMDB
     - get TMDB api key @done
-    - test webservice
-    - identify needed info
+    - test webservice @done
+    - identify needed info @done
+    - find actors, directors info
+    - set up outbound connection logic
+      - axios?
+      - get movie info
+      - get poster images
+      - get actor info
   - set up caching system
     - investigate options
       - Redis?
@@ -23,6 +29,11 @@
     - create token system to protect APIs
 - create frontend
   - set up react project
+  - design general layout
+    - figma?
+  - finalize aesthetic
+    - QuizUp?
+    - choose style library
   - create pages
     - login page
     - profile page
