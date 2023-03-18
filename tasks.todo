@@ -30,5 +30,5 @@
     - movie page
     - list page?
 - set up logger
-- set up environment manager
-  - .env file?
+- set up environment manager @done
+  - .env file? @done
