@@ -16,6 +16,7 @@
     - investigate options
       - Redis?
   - create endpoints
+    - add error handling/logging @done
     - create user crud @done
     - create badge crud @done
     - create watch movie endpoint @done
@@ -40,8 +41,8 @@
     - home page
     - movie page
     - list page?
-- logger
+- logger @done
   - set up logger @done
-  - add logging to all queries
+  - add logging to all queries @done
 - set up environment manager @done
   - .env file? @done
