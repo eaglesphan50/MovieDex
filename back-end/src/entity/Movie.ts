@@ -1,6 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from 'typeorm';
-import { User } from './User';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, OneToMany } from 'typeorm';
 import { Badge } from './Badge';
+import { Rating } from './Rating';
 
 @Entity()
 export class Movie {
@@ -10,10 +10,10 @@ export class Movie {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
     created_at: string;
 
-  @ManyToMany(() => User, user => user.movies)
-    users: User[];
+  @OneToMany(() => Rating, rating => rating.movie)
+  @JoinTable()
+    ratings: Rating[];
 
   @ManyToMany(() => Badge, badge => badge.movies)
     badges: Badge[];
-
 }

@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, OneToMany } from 'typeorm';
+
 import { Badge } from './Badge';
-import { Movie } from './Movie';
+import { Rating } from './Rating';
 
 @Entity()
 export class User {
@@ -26,7 +27,7 @@ export class User {
   @JoinTable()
     badges: Badge[];
 
-  @ManyToMany(() => Movie, movie => movie.users)
+  @OneToMany(() => Rating, rating => rating.user)
   @JoinTable()
-    movies: Movie[];
+    ratings: Rating[];
 }

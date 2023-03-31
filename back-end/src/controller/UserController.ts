@@ -5,6 +5,7 @@ import * as moment from 'moment';
 import { Movie } from '../entity/Movie';
 import { Badge } from '../entity/Badge';
 import { logger } from '../../lib/logger';
+import { Rating } from '../entity/Rating';
 
 export class UserController {
 
@@ -67,7 +68,7 @@ export class UserController {
     const movieId = parseInt(request.body.movieId);
 
     let user = await this.userRepository.findOne({
-      relations: ['movies', 'badges'],
+      relations: ['ratings', 'badges'],
       where: { id }
     });
     if (!user) {
@@ -77,7 +78,7 @@ export class UserController {
 
     const movie = await AppDataSource.getRepository(Movie).findOne({ 
       where: {id: movieId},
-      relations: ['badges']
+      relations: ['badges', 'ratings']
     });
     if (!movie) {
       logger.info(`movie with id: ${movieId} does not exist`);
@@ -86,17 +87,19 @@ export class UserController {
 
     // Add movie to the user's watchlist
     const updatedAt = moment().format('YYYY-MM-DD HH:mm:ss');
-    const moviesSeen = user.movies;
-    if (moviesSeen.some(m => m.id === movie.id)) {
+    const moviesRatedByUser = user.ratings;
+    if (moviesRatedByUser.some(r => r.movie.id === movie.id)) {
       logger.info(`user: ${id} has already seen movie: ${movieId}`);
       return `user: ${id} has already seen movie: ${movieId}`;
     }
 
-    moviesSeen.push(movie);
-    user = Object.assign(user, {
-      movies: moviesSeen,
-      updated_at: updatedAt
+    // save rating
+    const rating = Object.assign(new Rating(), {
+      updated_at: updatedAt,
+      user,
+      movie
     });
+    await AppDataSource.getRepository(Rating).save(rating);
     user = await this.userRepository.save(user);
     logger.info(`added movie: ${movie.id} to user: ${id} watchlist`);
 
@@ -113,7 +116,7 @@ export class UserController {
       });
       let giveBadge = true;
       for (const movieInLoop of fullBadge.movies) {
-        if (!user.movies.some(m => m.id === movieInLoop.id)) {
+        if (!user.ratings.some(r => r.movie.id === movieInLoop.id)) {
           giveBadge = false;
           break; // user has not seen all of the movies for this badge
         }
@@ -139,6 +142,7 @@ export class UserController {
     return {
       userId: id,
       movieId,
+      ratingId: rating.id,
       badgesAquired: anyBadgesGiven,
       badges: newBadges
     };
@@ -146,26 +150,43 @@ export class UserController {
 
   async seenMovies(request: Request, response: Response, next: NextFunction) {
     const id = parseInt(request.params.id);
+    logger.info('getting all movies seen by user: ' + id);
 
     const user = await this.userRepository.findOne({
-      relations: ['movies'],
+      relations: ['ratings'],
       where: { id }
     });
 
-    logger.info('getting all movies seen by user: ' + id);
+    if (!user) {
+      logger.info(`user ${id} does not exist`);
+      return [];
+    }
 
-    return user.movies;
+    const seenMovies: Movie[] = [];
+    for (const rating of user.ratings) {
+      const fullRating = await AppDataSource.getRepository(Rating).findOne({ 
+        where: {id: rating.id},
+        relations: ['movies']
+      });
+      seenMovies.push(fullRating.movie);
+    }
+
+    return seenMovies;
   }
 
   async heldBadges(request: Request, response: Response, next: NextFunction) {
     const id = parseInt(request.params.id);
+    logger.info('getting all badges seen by user: ' + id);
 
     const user = await this.userRepository.findOne({
       relations: ['badges'],
       where: { id }
     });
 
-    logger.info('getting all badges seen by user: ' + id);
+    if (!user) {
+      logger.info(`user ${id} does not exist`);
+      return [];
+    }
 
     return user.badges;
   }

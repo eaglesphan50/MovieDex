@@ -28,6 +28,14 @@
   - create authentication
     - integrate passport.js
     - create token system to protect APIs
+  - add rating relationships
+    - create rating entity @done
+    - rework many to many relationship between users and movies @done
+    - rework all existing user<->movie endpoints @done
+      - rework seenMovies @done
+      - rework watchMovie @done
+    - create rate movie endpoint
+    - create review movie endpoint
 - create frontend
   - set up react project
   - design general layout
@@ -46,3 +54,10 @@
   - add logging to all queries @done
 - set up environment manager @done
   - .env file? @done
+- write tests
+  - choose testing framework
+    - backend
+    - frontend
+  - mocking?
+    - choose mocking framework?
+  - coverage tool?

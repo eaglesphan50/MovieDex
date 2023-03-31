@@ -6,6 +6,7 @@ dotenv.config();
 import { User } from './entity/User';
 import { Badge } from './entity/Badge';
 import { Movie } from './entity/Movie';
+import { Rating } from './entity/Rating';
 
 export const AppDataSource = new DataSource({
   type: 'mysql',
@@ -16,7 +17,7 @@ export const AppDataSource = new DataSource({
   database: process.env.SQL_DB,
   synchronize: true,
   logging: false,
-  entities: [User, Badge, Movie],
+  entities: [User, Badge, Movie, Rating],
   migrations: [],
   subscribers: [],
 });
