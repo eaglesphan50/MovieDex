@@ -12,6 +12,7 @@
       - get movie info
       - get poster images
       - get actor info
+    - automated scripts to add new movies to badges
   - set up caching system
     - investigate options
       - Redis?

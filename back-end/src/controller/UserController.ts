@@ -100,7 +100,6 @@ export class UserController {
       movie
     });
     await AppDataSource.getRepository(Rating).save(rating);
-    user = await this.userRepository.save(user);
     logger.info(`added movie: ${movie.id} to user: ${id} watchlist`);
 
     // see if badge should be awarded
@@ -146,6 +145,11 @@ export class UserController {
       badgesAquired: anyBadgesGiven,
       badges: newBadges
     };
+  }
+
+  async unwatchMovie(request: Request, response: Response, next: NextFunction) {
+    // remove rating record
+    // check if any badges to remove
   }
 
   async seenMovies(request: Request, response: Response, next: NextFunction) {
