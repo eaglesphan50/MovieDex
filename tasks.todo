@@ -13,6 +13,7 @@
       - get poster images
       - get actor info
     - automated scripts to add new movies to badges
+    - add http-errors to endpoints @done
   - set up caching system
     - investigate options
       - Redis?
@@ -29,14 +30,13 @@
   - create authentication
     - integrate passport.js
     - create token system to protect APIs
-  - add rating relationships
+  - add rating relationships @done
     - create rating entity @done
     - rework many to many relationship between users and movies @done
     - rework all existing user<->movie endpoints @done
       - rework seenMovies @done
       - rework watchMovie @done
-    - create rate movie endpoint
-    - create review movie endpoint
+    - create rate movie endpoint @done
 - create frontend
   - set up react project
   - design general layout
