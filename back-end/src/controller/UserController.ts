@@ -22,6 +22,7 @@ export class UserController {
   private userRepository = AppDataSource.getRepository(User);
   private badgeRepository = AppDataSource.getRepository(Badge);
   private ratingRepository = AppDataSource.getRepository(Rating);
+  private movieRepository = AppDataSource.getRepository(Movie);
 
   async all(request: Request, response: Response, next: NextFunction) {
     return this.userRepository.find();
@@ -237,7 +238,58 @@ export class UserController {
 
   async unwatchMovie(request: Request, response: Response, next: NextFunction) {
     // remove rating record
+    const userId = parseInt(request.params.userId);
+    if (!userId) {
+      logger.info('missing param userId');
+      throw new httpError.BadRequest('missing param userId');
+    }
+
+    const movieId = parseInt(request.body.movieId);
+    if (!movieId) {
+      logger.info('missing param movieId');
+      throw new httpError.BadRequest('missing param movieId');
+    }
+
+    const rating = await this.ratingRepository.findOneBy({
+      movie: { id: movieId },
+      user: { id: userId }
+    });
+    if (!rating) {
+      logger.info(`rating for user: ${userId} and movie: ${movieId} not found`);
+      throw new httpError.NotFound(`rating for user: ${userId} and movie: ${movieId} not found`);
+    }
+
+    try {
+      await this.ratingRepository.remove(rating);
+    } catch (e) {
+      logger.info(`error removing rating: ${rating.id}`);
+      throw new httpError.InternalServerError(`error removing user: ${rating.id}`);
+    }
+
     // check if any badges to remove
+    const movie = await this.movieRepository.findOne({
+      where: {id: movieId},
+      relations: ['badges']
+    });
+
+    let user = await this.userRepository.findOne({
+      where: {id: movieId},
+      relations: ['badges']
+    });
+
+    user.badges = user.badges.filter(
+      badge => badge.id !== movie.badges.find(
+        b => b.id === badge.id
+      )?.id
+    );
+
+    try {
+      user = await this.userRepository.save(user);
+    } catch (e) {
+      logger.info(`error saving user: ${user.id}`);
+      throw new httpError.InternalServerError(`error saving user: ${user.id}`);
+    }
+    return user;
   }
 
   async seenMovies(request: Request, response: Response, next: NextFunction): Promise<Movie[]> {

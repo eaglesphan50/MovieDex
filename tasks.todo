@@ -18,13 +18,14 @@
     - investigate options
       - Redis?
   - create endpoints
-    - add error handling/logging @done
+    - add error handling/logging
+      - add error handling on all selects
     - create user crud @done
     - create badge crud @done
     - create watch movie endpoint @done
       - integrate badge reception @done
-    - create unwatch movie endpoint
-      - create badge takeaway
+    - create unwatch movie endpoint @done
+      - create badge takeaway @done
     - create get movie info endpoint
     - create movies per badge endpoint
   - create authentication
