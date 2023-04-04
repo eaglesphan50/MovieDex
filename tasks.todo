@@ -6,12 +6,11 @@
     - get TMDB api key @done
     - test webservice @done
     - identify needed info @done
-    - find actors, directors info
-    - set up outbound connection logic
-      - axios?
-      - get movie info
-      - get poster images
-      - get actor info
+    - find actors, directors info @done
+    - set up outbound connection logic @done
+      - axios? @done
+      - get movie info @done
+      - get poster images @done
     - automated scripts to add new movies to badges
     - add http-errors to endpoints @done
   - set up caching system
@@ -26,7 +25,7 @@
       - integrate badge reception @done
     - create unwatch movie endpoint @done
       - create badge takeaway @done
-    - create get movie info endpoint
+    - create get movie info endpoint @done
     - create movies per badge endpoint
   - create authentication
     - integrate passport.js

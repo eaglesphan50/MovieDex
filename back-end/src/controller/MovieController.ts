@@ -41,8 +41,26 @@ export class MovieController {
       throw new httpError.InternalServerError(`error getting movie: ${id}`);
     }
 
+    const movieData = axiosResponse.data;
+    try {
+      const connection = new Connection();
+      axiosResponse = await connection.get('movie/' + id + '/credits');
+    } catch (e) {
+      logger.info(`error getting movie: ${id}`);
+      throw new httpError.InternalServerError(`error getting movie: ${id}`);
+    }
+
+    if (axiosResponse.status === 404) {
+      logger.info(`movie: ${id} not found in TMDB`);
+      throw new httpError.NotFound(`movie: ${id} not found in TMDB`);
+    } else if (axiosResponse.status > 200) {
+      logger.info(`error getting movie: ${id}`);
+      throw new httpError.InternalServerError(`error getting movie: ${id}`);
+    }
+    movieData.cast = axiosResponse?.data?.cast;
+
     // TODO cache?
 
-    return axiosResponse.data;
+    return movieData;
   }
 }
