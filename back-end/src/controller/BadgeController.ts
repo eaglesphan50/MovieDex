@@ -9,11 +9,11 @@ export class BadgeController {
 
   private badgeRepository = AppDataSource.getRepository(Badge);
 
-  async all(request: Request, response: Response, next: NextFunction) {
+  async all(request: Request, response?: Response, next?: NextFunction) {
     return this.badgeRepository.find();
   }
 
-  async one(request: Request, response: Response, next: NextFunction): Promise<Badge> {
+  async one(request: Request, response?: Response, next?: NextFunction): Promise<Badge> {
     const id = parseInt(request.params.id);
     if (!id) {
       logger.info('missing param id');
@@ -29,11 +29,11 @@ export class BadgeController {
     return badge;
   }
 
-  async save(request: Request, response: Response, next: NextFunction) {
+  async save(request: Request, response?: Response, next?: NextFunction) {
     // rethink this
   }
 
-  async remove(request: Request, response: Response, next: NextFunction): Promise<void> {
+  async remove(request: Request, response?: Response, next?: NextFunction): Promise<void> {
     const id = parseInt(request.params.id);
     if (!id) {
       logger.info('missing param id');

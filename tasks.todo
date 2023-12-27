@@ -20,7 +20,7 @@
     - add error handling/logging
       - add error handling on all selects
     - create user crud @done
-    - create badge crud @done
+    - create badge crud 
     - create watch movie endpoint @done
       - integrate badge reception @done
     - create unwatch movie endpoint @done

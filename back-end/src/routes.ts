@@ -59,7 +59,7 @@ export const Routes = [{
   action: 'remove'
 }, {
   method: 'get',
-  route: '/movied/:id',
+  route: '/movies/:id',
   controller: MovieController,
   action: 'one'
 }];

@@ -4,7 +4,7 @@ import { AppDataSource } from '../data-source';
 import { NextFunction, Request, Response } from 'express';
 import { Movie } from '../entity/Movie';
 import { logger } from '../../lib/logger';
-import { Connection } from '../../lib/connection';
+import { TmdbConnection } from '../../lib/connection';
 import { AxiosResponse } from 'axios';
 
 export class MovieController {
@@ -25,8 +25,8 @@ export class MovieController {
     }
 
     let axiosResponse: AxiosResponse;
+    const connection = new TmdbConnection();
     try {
-      const connection = new Connection();
       axiosResponse = await connection.get('movie/' + id);
     } catch (e) {
       logger.info(`error getting movie: ${id}`);
@@ -43,7 +43,6 @@ export class MovieController {
 
     const movieData = axiosResponse.data;
     try {
-      const connection = new Connection();
       axiosResponse = await connection.get('movie/' + id + '/credits');
     } catch (e) {
       logger.info(`error getting movie: ${id}`);
@@ -57,7 +56,7 @@ export class MovieController {
       logger.info(`error getting movie: ${id}`);
       throw new httpError.InternalServerError(`error getting movie: ${id}`);
     }
-    movieData.cast = axiosResponse?.data?.cast;
+    movieData.cast = axiosResponse?.data?.cast?.slice(0, 10);
 
     // TODO cache?
 

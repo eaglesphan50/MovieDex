@@ -1,5 +1,6 @@
 import * as moment from 'moment';
 import * as httpError from 'http-errors';
+import { createHash } from 'crypto';
 
 import { AppDataSource } from '../data-source';
 import { NextFunction, Request, Response } from 'express';
@@ -50,9 +51,11 @@ export class UserController {
 
     const updatedAt = moment().format('YYYY-MM-DD HH:mm:ss');
 
+    const hashedPassword = createHash('sha256').update(password).digest('hex');
+
     let user = Object.assign(new User(), {
       email,
-      password,
+      password: hashedPassword,
       username,
       updated_at: updatedAt
     });
